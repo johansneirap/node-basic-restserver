@@ -1,12 +1,17 @@
 const express = require('express');
 const cors = require('cors');
+const fileUpload = require('express-fileupload');
 
 class Server {
 
     constructor() {
         this.app = express()
         this.port = process.env.PORT;
-        this.userPath = '/api/user';
+        this.paths = {
+            userPath: '/api/user',
+            uploadPath: '/uploads'
+        };
+
         // middlewares
         this.middlewares();
 
@@ -16,7 +21,7 @@ class Server {
 
     middlewares() {
 
-        //  read adn parse body request
+        //  read and parse body request
         this.app.use(express.json());
 
 
@@ -25,10 +30,17 @@ class Server {
 
         // CORS
         this.app.use(cors());
+
+        // file upload
+        this.app.use(fileUpload({
+            useTempFiles: true,
+            tempFileDir: '/tmp/'
+        }));
     }
 
     routes() {
-        this.app.use(this.userPath, require('../routes/user'));
+        this.app.use(this.paths.userPath, require('../routes/user'));
+        this.app.use(this.paths.uploadPath, require('../routes/uploads'));
     }
 
     listen() {

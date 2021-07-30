@@ -8,7 +8,7 @@ const getUser = (req, res = response) => {
 
 const postUser = (req, res = response) => {
     const body = req.body;
-
+    console.log(req.files);
     res.json({
         msg: 'post API from controller',
         body
