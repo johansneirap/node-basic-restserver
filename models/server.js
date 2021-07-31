@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
+const db = require('../db/connection');
 
 class Server {
 
@@ -11,12 +12,22 @@ class Server {
             userPath: '/api/user',
             uploadPath: '/uploads'
         };
+        this.dbConnection();
 
         // middlewares
         this.middlewares();
 
         // routes
         this.routes()
+    }
+
+    async dbConnection() {
+        try {
+            await db.authenticate();
+            console.log('Database online');
+        } catch (error) {
+            throw new Error(error);
+        }
     }
 
     middlewares() {
@@ -39,7 +50,7 @@ class Server {
     }
 
     routes() {
-        this.app.use(this.paths.userPath, require('../routes/user'));
+        this.app.use(this.paths.userPath, require('../routes/participant'));
         this.app.use(this.paths.uploadPath, require('../routes/uploads'));
     }
 
