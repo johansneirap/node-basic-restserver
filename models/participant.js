@@ -26,6 +26,12 @@ const Participant = db.define('Participant', {
     },
     participation_date: {
         type: DataTypes.DATE
+    },
+    file_url: {
+        type: DataTypes.STRING
+    },
+    owner_filename: {
+        type: DataTypes.STRING
     }
 })
 

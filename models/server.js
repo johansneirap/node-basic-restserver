@@ -9,7 +9,7 @@ class Server {
         this.app = express()
         this.port = process.env.PORT;
         this.paths = {
-            userPath: '/api/user',
+            participantPath: '/api/participant',
             uploadPath: '/uploads'
         };
         this.dbConnection();
@@ -26,6 +26,7 @@ class Server {
             await db.authenticate();
             console.log('Database online');
         } catch (error) {
+            console.log('database connection failed');
             throw new Error(error);
         }
     }
@@ -50,7 +51,7 @@ class Server {
     }
 
     routes() {
-        this.app.use(this.paths.userPath, require('../routes/participant'));
+        this.app.use(this.paths.participantPath, require('../routes/participant'));
         this.app.use(this.paths.uploadPath, require('../routes/uploads'));
     }
 

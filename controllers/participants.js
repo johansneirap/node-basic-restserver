@@ -1,19 +1,51 @@
+const { parse } = require('dotenv');
+const path = require('path');
+const { fileUpload } = require('../helpers/upload-file');
 const { response } = require('express');
 const Participant = require('../models/participant');
 
-const getParticipant = (req, res = response) => {
-    res.json({
-        msg: 'get API from controller'
-    });
+const getParticipant = async(req, res = response) => {
+    const { id } = req.params;
+    const participant = await Participant.findByPk(id);
+    if (participant) {
+        res.json(participant);
+    } else {
+        res.json({
+            msg: `Doesn't exists participant with id ${id}`
+        });
+    }
 }
 
-const postParticipant = (req, res = response) => {
-    const body = req.body;
-    console.log(req.files);
-    res.json({
-        msg: 'post API from controller',
-        body
-    });
+const postParticipant = async(req, res = response) => {
+    // const participant = JSON.parse(req.body.participant);
+    const files = req.files
+
+    if (!req.files || Object.keys(req.files).length === 0) {
+        res.status(400).json({ error: 'No files were uploaded.' });
+        return;
+    }
+
+    try {
+
+        const participant = new Participant(JSON.parse(req.body.participant));
+        const finalFileName = await fileUpload(files);
+        const urlPathFile = `localhost:3000/uploads/${finalFileName}`;
+        participant.filename = finalFileName;
+        participant.file_url = urlPathFile;
+        participant.owner_filename = files.file.name;
+        await participant.save();
+        res.json({
+            msg: 'post API from controller',
+            participant,
+            ...files,
+            filename_onserver: finalFileName,
+            url: urlPathFile
+        });
+    } catch (msg) {
+        res.status(400).json({ msg })
+    }
+
+
 }
 
 const getParticipants = async(req, res = response) => {

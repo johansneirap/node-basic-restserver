@@ -3,9 +3,9 @@ const { getParticipant, getParticipants, postParticipant, putParticipant, delete
 
 const router = Router();
 
-router.get('/', getParticipant);
+router.get('/:id', getParticipant);
 
-router.get('/all', getParticipants);
+router.get('/', getParticipants);
 
 router.post('/', postParticipant);
 
