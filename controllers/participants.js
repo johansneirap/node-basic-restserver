@@ -18,8 +18,7 @@ const getParticipant = async(req, res = response) => {
 
 const postParticipant = async(req, res = response) => {
     // const participant = JSON.parse(req.body.participant);
-    const files = req.files
-
+    const files = req.files;
     if (!req.files || Object.keys(req.files).length === 0) {
         res.status(400).json({ error: 'No files were uploaded.' });
         return;
@@ -42,7 +41,7 @@ const postParticipant = async(req, res = response) => {
             url: urlPathFile
         });
     } catch (msg) {
-        res.status(400).json({ msg })
+        res.status(400).json({ msg: 'doesnt run' })
     }
 
 

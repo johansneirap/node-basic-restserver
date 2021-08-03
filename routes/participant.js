@@ -9,6 +9,11 @@ router.get('/', getParticipants);
 
 router.post('/', postParticipant);
 
+router.post('/test', (req, res) => {
+    console.log(req.body);
+    res.json({ msg: req.body, file: req.files });
+})
+
 router.put('/', putParticipant);
 
 router.delete('/', deleteParticipant);
