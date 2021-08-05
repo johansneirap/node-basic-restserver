@@ -19,8 +19,21 @@ const getParticipant = async(req, res = response) => {
 const postParticipant = async(req, res = response) => {
     // const participant = JSON.parse(req.body.participant);
     const files = req.files;
-    if (!req.files || Object.keys(req.files).length === 0) {
-        res.status(400).json({ error: 'No files were uploaded.' });
+    // if (!req.files || Object.keys(req.files).length === 0) {
+    //     res.status(400).json({ error: 'No files were uploaded.' });
+    //     return;
+    // }
+    if (!files || Object.keys(req.files).length === 0) {
+        try {
+            const participant = new Participant(JSON.parse(req.body.participant));
+            await participant.save();
+            res.json({
+                msg: 'Participant registered successfully',
+                participant
+            });
+        } catch (msg) {
+            res.status(400).json({ msg })
+        }
         return;
     }
 
@@ -34,7 +47,7 @@ const postParticipant = async(req, res = response) => {
         participant.owner_filename = files.file.name;
         await participant.save();
         res.json({
-            msg: 'post API from controller',
+            msg: 'Participant registered successfully',
             participant,
             ...files,
             filename_onserver: finalFileName,
