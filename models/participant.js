@@ -18,7 +18,7 @@ const Participant = db.define('Participant', {
     resources: {
         type: DataTypes.STRING
     },
-    vertical: {
+    execution_approach: {
         type: DataTypes.STRING
     },
     filename: {
@@ -31,6 +31,12 @@ const Participant = db.define('Participant', {
         type: DataTypes.STRING
     },
     owner_filename: {
+        type: DataTypes.STRING
+    },
+    timeline: {
+        type: DataTypes.STRING
+    },
+    email: {
         type: DataTypes.STRING
     }
 })

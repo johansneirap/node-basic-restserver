@@ -38,7 +38,7 @@ const postParticipant = async(req, res = response) => {
     }
 
     try {
-
+        console.log(JSON.parse(req.body.participant));
         const participant = new Participant(JSON.parse(req.body.participant));
         const finalFileName = await fileUpload(files);
         const urlPathFile = `localhost:3000/uploads/${finalFileName}`;
