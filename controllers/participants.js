@@ -32,7 +32,7 @@ const postParticipant = async(req, res = response) => {
                 participant
             });
         } catch (msg) {
-            res.status(400).json({ msg })
+            res.status(400).json({ msg: 'review the data structure' });
         }
         return;
     }
